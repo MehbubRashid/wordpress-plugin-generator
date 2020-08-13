@@ -1,7 +1,6 @@
 {
-  "name": "Wppb Online Generator",
+  "name": "wordpress-plugin-generator",
   "description": "A wppb online generator",
-  "repository": "https://github.com/tmeister/wppb-gen",
-  "logo": "http://node-js-sample.herokuapp.com/node.svg",
+  "repository": "https://github.com/MehbubRashid/wordpress-plugin-generator",
   "keywords": ["node", "express", "static"]
 }

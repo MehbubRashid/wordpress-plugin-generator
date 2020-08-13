@@ -29,7 +29,7 @@ app
   .route(
     '/.well-known/acme-challenge/miU-q9A8ox1btoayRB8tM6wcWPisl42aR4wnixiK2UU'
   )
-  .get(function(req, res) {
+  .get(function (req, res) {
     res.send(
       'miU-q9A8ox1btoayRB8tM6wcWPisl42aR4wnixiK2UU.9s9UoMhX5iRzhJpZG6oAd-7PRFIBTPxbwd7nVTPfGcM'
     );
@@ -38,12 +38,12 @@ app
 app
   .route('/')
   //GET REQUEST DRAW THE HOME PAGE
-  .get(function(req, res) {
-    res.send('Please visit <a href="https://wppb.me">https://wppb.me</a>');
+  .get(function (req, res) {
+    res.send('<form id="generator-form" class="generator-form" action="" method="post" novalidate="novalidate"><div class="row"><div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"> <input class="home valid" type="text" name="name" id="name" placeholder="Plugin Name" required="" aria-required="true" aria-invalid="false"></div><div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"> <input class="home" type="text" name="slug" id="slug" placeholder="Plugin Slug" required="" aria-required="true"></div></div><div class="row"><div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> <input class="home" type="text" name="uri" id="uri" placeholder="Plugin Uri" required="" aria-required="true"></div></div><div class="row"><div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"> <input class="home" type="text" name="author[name]" id="author-name" placeholder=" Author Name" required="" aria-required="true"></div><div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"> <input class="home" type="text" name="author[email]" id="author-email" placeholder="Author Email" required="" aria-required="true"></div></div><div class="row"><div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> <input class="home valid" type="text" name="author[uri]" id="author-uri" placeholder="Author Uri" required="" aria-required="true" aria-invalid="false"></div></div><div class="row"><div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"><div class="error-form"></div></div><div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"> <button type="submit" class="primary pull-right">Build Plugin</button></div></div></form>');
     //res.redirect('https://wppb.me');
   }) // END GET ROUTE
 
-  .post(function(req, res) {
+  .post(function (req, res) {
     var origin = process.cwd() + '/source/';
     var pluginSlug = '';
     var pluginName = '';
@@ -87,7 +87,7 @@ app
     destination =
       process.cwd() + '/tmp/' + pluginSlug + '-' + new Date().getTime();
 
-    fs.copy(origin, destination, function(err) {
+    fs.copy(origin, destination, function (err) {
       if (err) {
         console.error(err);
 
@@ -101,14 +101,14 @@ app
       );
 
       //FIND AND REPLACE FILES NAMES
-      walker(destination + '/' + pluginSlug, function(err, files) {
+      walker(destination + '/' + pluginSlug, function (err, files) {
         if (err) {
           console.error(err);
 
           return;
         }
 
-        files.forEach(function(file) {
+        files.forEach(function (file) {
           var newName;
           var re = /plugin-name/gi;
           newName = file.replace(re, pluginSlug);
@@ -208,7 +208,7 @@ app
 
         var zip = new EasyZip();
 
-        zip.zipFolder(destination + '/' + pluginSlug, function() {
+        zip.zipFolder(destination + '/' + pluginSlug, function () {
           zip.writeToResponse(res, pluginSlug);
         });
       });
@@ -220,7 +220,7 @@ app
  */
 var job = new CronJob(
   '30 1 * * *',
-  function() {
+  function () {
     //GET FRESH CODE
     getSourceCode();
   },
@@ -236,9 +236,9 @@ job.start();
 
 var clean = new CronJob(
   '0 * * * *',
-  function() {
+  function () {
     var destination = process.cwd() + '/tmp/';
-    rimraf(destination, function() {});
+    rimraf(destination, function () { });
   },
   true,
   'America/Los_Angeles'
@@ -249,9 +249,9 @@ clean.start();
 /**
  * GET PLUGIN CODE FROM GITHUB
  */
-var getSourceCode = function() {
+var getSourceCode = function () {
   var repo = {
-    user: 'DevinVinson',
+    user: 'MehbubRashid',
     repo: 'WordPress-Plugin-Boilerplate',
     ref: 'master'
   };
@@ -259,19 +259,19 @@ var getSourceCode = function() {
   var destination = process.cwd() + '/source/';
 
   //DELETE OLD CODE
-  rimraf(destination, function() {});
+  rimraf(destination, function () { });
 
   //GET THE NEW CODE FORM THE REPO
   ghdownload(repo, destination)
-    .on('zip', function(zipUrl) {
+    .on('zip', function (zipUrl) {
       console.log('zip: ' + zipUrl);
     })
 
-    .on('error', function(err) {
+    .on('error', function (err) {
       console.error('error ' + err);
     })
 
-    .on('end', function() {
+    .on('end', function () {
       console.log('Finish Github Download ');
     });
 };
@@ -279,10 +279,10 @@ var getSourceCode = function() {
 /**
  * RECURSIVE WALKER TO GET ALL THE FILES IN DIRECTORY
  */
-var walker = function(dir, done) {
+var walker = function (dir, done) {
   var results = [];
 
-  fs.readdir(dir, function(err, list) {
+  fs.readdir(dir, function (err, list) {
     if (err) return done(err);
 
     var i = 0;
@@ -294,9 +294,9 @@ var walker = function(dir, done) {
 
       file = dir + '/' + file;
 
-      fs.stat(file, function(err, stat) {
+      fs.stat(file, function (err, stat) {
         if (stat && stat.isDirectory()) {
-          walker(file, function(err, res) {
+          walker(file, function (err, res) {
             results = results.concat(res);
 
             next();
@@ -311,11 +311,11 @@ var walker = function(dir, done) {
   });
 };
 
-var capitalize = function(name) {
+var capitalize = function (name) {
   var newName = '';
   name = name.replace(/-/gi, ' ');
   pieces = name.split(' ');
-  pieces.forEach(function(word) {
+  pieces.forEach(function (word) {
     newName += word.charAt(0).toUpperCase() + word.slice(1) + ' ';
   });
 
@@ -326,6 +326,6 @@ var capitalize = function(name) {
 getSourceCode();
 
 //Start web app.
-app.listen(app.get('port'), function() {
+app.listen(app.get('port'), function () {
   console.log('Node app is running at localhost:' + app.get('port'));
 });
