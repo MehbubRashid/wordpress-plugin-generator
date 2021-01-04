@@ -56,6 +56,8 @@ app
     var pluginAuthorEmail = '';
     var pluginAuthorFull = '';
     var pluginNameVersion = '';
+    var pluginNamePath = '';
+    var pluginNameUrl = '';
     var destination = '';
     var data = req.body;
     var visitor = ua('UA-56742268-1');
@@ -82,6 +84,8 @@ app
     pluginNamePackage = capitalize(pluginSlug);
     pluginNameInstance = pluginSlug.replace(/-/gi, '_');
     pluginNameVersion = (pluginNameInstance + '_VERSION').toUpperCase();
+    pluginNamePath = (pluginNameInstance + '_PATH').toUpperCase();
+    pluginNameUrl = (pluginNameInstance + '_URL').toUpperCase();
     pluginAuthorFull = pluginAuthor + ' <' + pluginAuthorEmail + '>';
 
     destination =
@@ -195,6 +199,25 @@ app
           recursive: true,
           silent: true
         });
+
+        //find Plugin Path
+        replace({
+          regex: 'PLUGIN_NAME_PATH',
+          replacement: pluginNamePath,
+          paths: [destination + '/' + pluginSlug],
+          recursive: true,
+          silent: true
+        });
+
+        //find Plugin url
+        replace({
+          regex: 'PLUGIN_NAME_URL',
+          replacement: pluginNameUrl,
+          paths: [destination + '/' + pluginSlug],
+          recursive: true,
+          silent: true
+        });
+
         //find Author URI
         replace({
           regex: 'plugin_name',
