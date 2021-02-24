@@ -39,7 +39,18 @@ app
   .route('/')
   //GET REQUEST DRAW THE HOME PAGE
   .get(function (req, res) {
-    res.send('<form id="generator-form" class="generator-form" action="" method="post" novalidate="novalidate"><div class="row"><div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"> <input class="home valid" type="text" name="name" id="name" placeholder="Plugin Name" required="" aria-required="true" aria-invalid="false"></div><div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"> <input class="home" type="text" name="slug" id="slug" placeholder="Plugin Slug" required="" aria-required="true"></div></div><div class="row"><div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> <input class="home" type="text" name="uri" id="uri" placeholder="Plugin Uri" required="" aria-required="true"></div></div><div class="row"><div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"> <input class="home" type="text" name="author[name]" id="author-name" placeholder=" Author Name" required="" aria-required="true"></div><div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"> <input class="home" type="text" name="author[email]" id="author-email" placeholder="Author Email" required="" aria-required="true"></div></div><div class="row"><div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> <input class="home valid" type="text" name="author[uri]" id="author-uri" placeholder="Author Uri" required="" aria-required="true" aria-invalid="false"></div></div><div class="row"><div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"><div class="error-form"></div></div><div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"> <button type="submit" class="primary pull-right">Build Plugin</button></div></div></form>');
+    res.send(`<form id="generator-form" class="generator-form" action="" method="post" novalidate="novalidate">
+    <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+     <input class="home valid" type="text" name="name" id="name" placeholder="Plugin Name" required="" aria-required="true" aria-invalid="false">
+     </div>
+     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"> 
+     <input class="home" type="text" name="slug" id="slug" placeholder="Plugin Slug" required="" aria-required="true">
+     <input class="home" type="text" name="prefix" id="prefix" placeholder="Plugin Prefix" required="" aria-required="true">
+     </div>
+     </div>
+     <div class="row">
+     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> <input class="home" type="text" name="uri" id="uri" placeholder="Plugin Uri" required="" aria-required="true"></div></div><div class="row"><div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"> <input class="home" type="text" name="author[name]" id="author-name" placeholder=" Author Name" required="" aria-required="true"></div><div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"> <input class="home" type="text" name="author[email]" id="author-email" placeholder="Author Email" required="" aria-required="true"></div></div><div class="row"><div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> <input class="home valid" type="text" name="author[uri]" id="author-uri" placeholder="Author Uri" required="" aria-required="true" aria-invalid="false"></div></div><div class="row"><div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"><div class="error-form"></div></div><div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"> <button type="submit" class="primary pull-right">Build Plugin</button></div></div></form>`);
     //res.redirect('https://wppb.me');
   }) // END GET ROUTE
 
@@ -51,6 +62,7 @@ app
     var pluginAuthor = '';
     var pluginAuthorURI = '';
     var pluginDescription = '';
+    var pluginPrefix = '';
     var pluginNamePackage = '';
     var pluginNameInstance = '';
     var pluginAuthorEmail = '';
@@ -71,16 +83,19 @@ app
     pluginName = String(data.name).length ? data.name : 'Amazing Plugin';
     pluginURI = String(data.uri).length
       ? data.uri
-      : 'http://example.com/amazing-plugin-uri/';
+      : 'https://codecanyon.net/user/divdojo/portfolio';
+    pluginPrefix = String(data.prefix).length
+    ? data.prefix
+    : 'prefix';
     pluginAuthor = String(data.author.name).length
       ? data.author.name
-      : 'Plugin Author';
+      : 'DivDojo';
     pluginAuthorURI = String(data.author.uri).length
       ? data.author.uri
-      : 'http://mydomain.tld';
+      : 'https://codecanyon.net/user/divdojo/portfolio';
     pluginAuthorEmail = String(data.author.email).length
       ? data.author.email
-      : 'my@email.tld';
+      : 'divdojo@gmail.com';
     pluginNamePackage = capitalize(pluginSlug);
     pluginNameInstance = pluginSlug.replace(/-/gi, '_');
     pluginNameVersion = (pluginNameInstance + '_VERSION').toUpperCase();
@@ -146,7 +161,7 @@ app
           silent: true
         });
 
-        //find Plugin Author
+        //replace Plugin Author
         replace({
           regex: 'Your Name or Your Company',
           replacement: pluginAuthor,
@@ -155,7 +170,7 @@ app
           silent: true
         });
 
-        //find Plugin Author Full
+        //replace Plugin Author Full
         replace({
           regex: 'Your Name <email@example.com>',
           replacement: pluginAuthorFull,
@@ -164,7 +179,7 @@ app
           silent: true
         });
 
-        //find Plugin_Name
+        //replace Plugin_Name
         replace({
           regex: 'Plugin_Name',
           replacement: pluginNamePackage,
@@ -173,7 +188,7 @@ app
           silent: true
         });
 
-        //find Plugin slug
+        //replace Plugin slug
         replace({
           regex: 'plugin-name',
           replacement: pluginSlug,
@@ -182,7 +197,7 @@ app
           silent: true
         });
 
-        //find Author URI
+        //replace Author URI
         replace({
           regex: 'http://example.com/?',
           replacement: pluginAuthorURI,
@@ -191,7 +206,7 @@ app
           silent: true
         });
 
-        //find Plugin Version
+        //replace Plugin Version
         replace({
           regex: 'PLUGIN_NAME_VERSION',
           replacement: pluginNameVersion,
@@ -200,25 +215,34 @@ app
           silent: true
         });
 
-        //find Plugin Path
+        //replace Plugin prefix lowercase
         replace({
-          regex: 'PLUGIN_NAME_PATH',
-          replacement: pluginNamePath,
+          regex: 'prefix',
+          replacement: pluginPrefix,
           paths: [destination + '/' + pluginSlug],
           recursive: true,
           silent: true
         });
 
-        //find Plugin url
+        //replace Plugin prefix capitalized
         replace({
-          regex: 'PLUGIN_NAME_URL',
-          replacement: pluginNameUrl,
+          regex: 'Prefix',
+          replacement: capitalize(pluginPrefix),
           paths: [destination + '/' + pluginSlug],
           recursive: true,
           silent: true
         });
 
-        //find Author URI
+        //replace Plugin prefix all capital
+        replace({
+          regex: 'PREFIX',
+          replacement: pluginPrefix.toUpperCase(),
+          paths: [destination + '/' + pluginSlug],
+          recursive: true,
+          silent: true
+        });
+
+        //replace Author URI
         replace({
           regex: 'plugin_name',
           replacement: pluginNameInstance,
