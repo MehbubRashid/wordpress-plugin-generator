@@ -46,7 +46,7 @@ app
      </div>
      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"> 
      <input class="home" type="text" name="slug" id="slug" placeholder="Plugin Slug" required="" aria-required="true">
-     <input class="home" type="text" name="prefix" id="prefix" placeholder="Plugin Prefix" required="" aria-required="true">
+     <input class="home" type="text" name="prefix" id="prefix" placeholder="Plugin Prefix (all lowercase)" required="" aria-required="true">
      </div>
      </div>
      <div class="row">
@@ -217,7 +217,7 @@ app
 
         //replace Plugin prefix lowercase
         replace({
-          regex: 'prefix',
+          regex: 'uprefix',
           replacement: pluginPrefix,
           paths: [destination + '/' + pluginSlug],
           recursive: true,
@@ -226,7 +226,7 @@ app
 
         //replace Plugin prefix capitalized
         replace({
-          regex: 'Prefix',
+          regex: 'Uprefix',
           replacement: capitalize(pluginPrefix),
           paths: [destination + '/' + pluginSlug],
           recursive: true,
@@ -235,7 +235,7 @@ app
 
         //replace Plugin prefix all capital
         replace({
-          regex: 'PREFIX',
+          regex: 'UPREFIX',
           replacement: pluginPrefix.toUpperCase(),
           paths: [destination + '/' + pluginSlug],
           recursive: true,
